@@ -14,6 +14,6 @@ public class Volvo240 extends Car{
     
     //Calculation and override
     public double speedFactor() {
-        return enginePower * 0.01 * trimFactor;
+        return getEnginePower() * 0.01 * trimFactor;
     }
 }
