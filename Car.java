@@ -86,23 +86,29 @@ public abstract class Car implements Movable {
 
     @Override
     public void turnRight() {
-        direction = switch (direction) {
-            case NORTH -> Direction.EAST;
-            case EAST -> Direction.SOUTH;
-            case SOUTH -> Direction.WEST;
-            case WEST -> Direction.NORTH;
-        };
+        if (direction == Direction.NORTH) {
+            direction = Direction.EAST;
+        } else if (direction == Direction.EAST) {
+            direction = Direction.SOUTH;
+        } else if (direction == Direction.SOUTH) {
+            direction = Direction.WEST;
+        } else {
+            direction = Direction.NORTH;
+        }
     }
 
 
     @Override
     public void turnLeft() {
-        direction = switch (direction) {
-            case NORTH -> Direction.WEST;
-            case WEST -> Direction.SOUTH;
-            case SOUTH -> Direction.EAST;
-            case EAST -> Direction.NORTH;
-        };
+        if (direction == Direction.NORTH) {
+            direction = Direction.WEST;
+        } else if (direction == Direction.WEST) {
+            direction = Direction.SOUTH;
+        } else if (direction == Direction.SOUTH) {
+            direction = Direction.EAST;
+        } else {
+            direction = Direction.NORTH;
+        }
     }
 
 
@@ -111,7 +117,7 @@ public abstract class Car implements Movable {
     }
 
 
-    // Overriden by each subclass.
+    // Override by each subclass.
     public abstract double speedFactor();
 
 
