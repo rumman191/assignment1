@@ -9,61 +9,17 @@ public abstract class Car implements Movable {
     private Color color;
     private String modelName;
 
-    // to caclute the movement
+    // to calculate the movement
     private double x = 0;
     private double y = 0;
-    private int direction = 0;
-    private int upp = 0;
-    private int right = 1;
-    private int down = 2;
-    private int left = 3;
+    private Direction direction = Direction.NORTH;
 
-    public void turnRight() {
-        if (direction == 0) {
-            direction = 1;
-        } else if (direction == 1) {
-            direction = 2;
-        } else if (direction == 2) {
-            direction = 3;
-        } else {
-            direction = 0;
-        }
-    }
-
-
-    public void turnLeft() {
-        if (direction == 3) {
-            direction = 2;
-        } else if (direction == 2) {
-            direction = 1;
-        } else if (direction == 1) {
-            direction = 0;
-        } else {
-            direction = 3;
-        }
-    }
-
-    public void move(){
-        if (direction == 0) {
-            this.y = y - currentSpeed;
-        } else if (direction == 1) {
-            this.x = x + currentSpeed;
-        } else if (direction == 2){
-            this.y = y + currentSpeed;
-        } else if (direction  == 3) {
-            this.x = x - currentSpeed;
-
-        }
-
-    }
-
-        //Constructor to initialize car properties
-    public Car(int nrDoors, double enginePower, Color color, String modelName) {
+    //Constructor to initialize Car properties
+    protected Car(int nrDoors, Color color,double enginePower, String modelName) {
         this.nrDoors = nrDoors;
         this.enginePower = enginePower;
         this.color = color;
         this.modelName = modelName;
-        stopEngine();
     }
 
     //Getters
@@ -83,6 +39,10 @@ public abstract class Car implements Movable {
         return color;
     }
 
+    public String getModelName() {
+        return modelName;
+    }
+
     //Setter
     public void setColor(Color clr) {
         color = clr;
@@ -98,24 +58,83 @@ public abstract class Car implements Movable {
     }
 
 
+    @Override
+    public void move() {
+        switch (direction) {
+            case NORTH:
+                y += currentSpeed;
+                break;
+            case EAST:
+                x += currentSpeed;
+                break;
+            case SOUTH:
+                y -= currentSpeed;
+                break;
+            case WEST:
+                x -= currentSpeed;
+                break;
+        }
+    }
+
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
+
+
+    @Override
+    public void turnRight() {
+        direction = switch (direction) {
+            case NORTH -> Direction.EAST;
+            case EAST -> Direction.SOUTH;
+            case SOUTH -> Direction.WEST;
+            case WEST -> Direction.NORTH;
+        };
+    }
+
+
+    @Override
+    public void turnLeft() {
+        direction = switch (direction) {
+            case NORTH -> Direction.WEST;
+            case WEST -> Direction.SOUTH;
+            case SOUTH -> Direction.EAST;
+            case EAST -> Direction.NORTH;
+        };
+    }
+
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+
     // Overriden by each subclass.
     public abstract double speedFactor();
 
 
     //Increase and decrease car speed
     public void incrementSpeed(double amount) {
-        currentSpeed = currentSpeed + speedFactor() * amount;
+        currentSpeed = Math.min(getEnginePower(), getCurrentSpeed() + speedFactor() * amount);
+    }
+    public void decrementSpeed(double amount) {
+        currentSpeed = Math.max(0, getCurrentSpeed() - speedFactor() * amount);
     }
 
-    public void decrementSpeed(double amount) {
-        currentSpeed = currentSpeed - speedFactor() * amount;
-    }
 
     public void gas(double amount) {
+        if (amount < 0 || amount > 1) {
+            return;
+        }
+        incrementSpeed(amount);
     }
 
     public void brake(double amount) {
+        if (amount < 0 || amount > 1) {
+            return;
+        }
         decrementSpeed(amount);
     }
-
 }

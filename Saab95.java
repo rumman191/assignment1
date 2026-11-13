@@ -9,8 +9,9 @@ public class Saab95 extends Car {
     public Saab95() {
 
         //Set the car information
-        super(2,125,Color.RED, "Saab95");
+        super(2,Color.red, 125,"Saab95" );
         turboOn = false;
+        stopEngine();
     }
 
     //Turn turbo on
@@ -23,7 +24,7 @@ public class Saab95 extends Car {
         turboOn = false;
     }
 
-    //Calculation and override
+    @Override
     public double speedFactor() {
         double turbo = 1;
         if(turboOn) turbo = 1.3;

@@ -1,8 +1,7 @@
-// interface
-interface Movable {
- void move();
- void turnLeft();
- void turnRight();
+public interface Movable {
+    void move();
+    void turnLeft();
+    void turnRight();
 }
 
 
